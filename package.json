@@ -38,7 +38,7 @@
     },
     "rules": {
       "linebreak-style": 0,
-      "max-len": ["error", {"code": 200}]
+      "max-len": ["error", {"code": 1000}]
     }
   },
   "browserslist": [
