@@ -96,22 +96,7 @@
             </fieldset>
 
             <div class="item__row">
-              <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар" @click="decrement">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-
-                <input type="text" value="1" v-model.number="productAmount">
-
-                <button type="button" aria-label="Добавить один товар" @click="increment">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
-
+              <ProductAmount v-model="productAmount"/>
               <button class="button button--primery" type="submit">
                 В корзину
               </button>
@@ -171,6 +156,7 @@
 <script>
 import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
+import ProductAmount from '@/components/ProductAmount.vue';
 import products from '../data/products';
 import categories from '../data/categories';
 
@@ -179,6 +165,9 @@ export default {
     return {
       productAmount: 1,
     };
+  },
+  components: {
+    ProductAmount,
   },
   filters: {
     numberFormat,
@@ -192,13 +181,6 @@ export default {
     },
   },
   methods: {
-    increment() {
-      this.productAmount += 1;
-    },
-    decrement() {
-      if (this.productAmount === 1) return;
-      this.productAmount -= 1;
-    },
     gotoPage,
     addToCart() {
       this.$store.commit(
