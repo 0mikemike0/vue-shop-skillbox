@@ -85,7 +85,7 @@
             </fieldset>
 
             <div class="item__row">
-              <ProductAmount v-model="productAmount"/>
+              <ChangeAmount v-model="productAmount"/>
               <button class="button button--primery" type="submit" :disabled="productAddSending">
                 В корзину
               </button>
@@ -147,7 +147,7 @@
 <script>
 import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
-import ProductAmount from '@/components/ProductAmount.vue';
+import ChangeAmount from '@/components/ChangeAmount.vue';
 import axios from 'axios';
 import { mapActions } from 'vuex';
 import API_BASE_URL from '../config';
@@ -165,7 +165,7 @@ export default {
     };
   },
   components: {
-    ProductAmount,
+    ChangeAmount,
   },
   filters: {
     numberFormat,

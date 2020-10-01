@@ -10,8 +10,6 @@ export default new Vuex.Store({
     cartProducts: [],
     userAccessKey: null,
     cartProductsData: [],
-    cartLoading: false,
-    cartLoadingFailed: false,
   },
   mutations: {
     updateCartProductAmount(state, { productId, amount }) {
@@ -55,42 +53,20 @@ export default new Vuex.Store({
   },
   actions: {
     loadCart(context) {
-      this.cartLoading = true;
-      this.cartLoadingFailed = false;
-      setTimeout(() => {
-        axios
-          .get(`${API_BASE_URL}/api/basket`, {
-            params: {
-              userAccessKey: context.state.userAccessKey,
-            },
-          })
-          .then((response) => {
-            if (!context.state.userAccessKey) {
-              localStorage.setItem('userAccessKey', response.data.user.accessKey);
-              context.commit('updateUserAccessKey', response.data.user.accessKey);
-            }
-            context.commit('updateCartProductsData', response.data.items);
-            context.commit('syncCartProducts');
-          })
-          .catch(() => { this.cartLoadingFailed = true; })
-          .then(() => { this.cartLoading = false; });
-      }, 5000);
-      // return axios
-      //   .get(`${API_BASE_URL}/api/baskets`, {
-      //     params: {
-      //       userAccessKey: context.state.userAccessKey,
-      //     },
-      //   })
-      //   .then((response) => {
-      //     if (!context.state.userAccessKey) {
-      //       localStorage.setItem('userAccessKey', response.data.user.accessKey);
-      //       context.commit('updateUserAccessKey', response.data.user.accessKey);
-      //     }
-      //     context.commit('updateCartProductsData', response.data.items);
-      //     context.commit('syncCartProducts');
-      //   })
-      //   .catch(() => { this.cartLoadingFailed = true; })
-      //   .then(() => { this.cartLoading = false; });
+      return axios
+        .get(`${API_BASE_URL}/api/baskets`, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          if (!context.state.userAccessKey) {
+            localStorage.setItem('userAccessKey', response.data.user.accessKey);
+            context.commit('updateUserAccessKey', response.data.user.accessKey);
+          }
+          context.commit('updateCartProductsData', response.data.items);
+          context.commit('syncCartProducts');
+        });
     },
     addProductToCart(context, { productId, amount }) {
       return axios
@@ -122,6 +98,20 @@ export default new Vuex.Store({
           context.commit('updateCartProductsData', response.data.items);
         })
         .catch(() => {
+          context.commit('syncCartProducts');
+        });
+    },
+    deleteCartProduct(context, { productId }) {
+      return axios
+        .delete(`${API_BASE_URL}/api/baskets/products`, {
+          productId,
+        }, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          context.commit('updateCartProductsData', response.data.items);
           context.commit('syncCartProducts');
         });
     },

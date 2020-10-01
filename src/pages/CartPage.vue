@@ -26,8 +26,8 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
-            <div v-if="$store.state.cartLoading">Загрузка товаров...</div>
-            <div v-if="$store.state.cartLoadingFailed">Произошла ошибка при загрузке товаров</div>
+            <div v-if="cartLoading">Загрузка товаров...</div>
+            <div v-if="cartLoadingFailed">Произошла ошибка при загрузке товаров <button @click="loadToCart">Попоробовать ещё раз</button></div>
             <CartItem v-for="item in products" :key="item.productId" :item="item"/>
           </ul>
         </div>
@@ -51,10 +51,16 @@
 
 <script>
 import numberFormat from '@/helpers/numberFormat';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import CartItem from '@/components/CartItem.vue';
 
 export default {
+  data() {
+    return {
+      cartLoading: false,
+      cartLoadingFailed: false,
+    };
+  },
   filters: { numberFormat },
   components: {
     CartItem,
@@ -64,6 +70,19 @@ export default {
       products: 'cartDetailProducts',
       totalPrice: 'cartTotalPrice',
     }),
+  },
+  methods: {
+    ...mapActions(['loadCart']),
+    loadToCart() {
+      this.cartLoadingFailed = false;
+      this.cartLoading = true;
+      this.loadCart()
+        .catch(() => { this.cartLoadingFailed = true; })
+        .then(() => { this.cartLoading = false; });
+    },
+  },
+  created() {
+    this.loadToCart();
   },
 };
 </script>
