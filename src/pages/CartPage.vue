@@ -32,7 +32,7 @@
           </ul>
         </div>
 
-        <div class="cart__block">
+        <div class="cart__block" >
           <p class="cart__desc">
             Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе
           </p>
@@ -40,7 +40,7 @@
             Итого: <span> {{ totalPrice | numberFormat }} ₽</span>
           </p>
 
-          <router-link tag="button" :to="{name:'order'}" class="cart__button button button--primery" type="submit">
+          <router-link tag="button" :to="{name:'order'}" class="cart__button button button--primery" type="submit" v-if ="$store.state.cartProducts.length">
             Оформить заказ
           </router-link>
         </div>
