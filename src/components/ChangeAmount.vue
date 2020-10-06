@@ -1,5 +1,5 @@
 <template>
-  <div class="form__counter">
+  <div class="product__counter form__counter">
     <button type="button" aria-label="Убрать один товар" @click="decrement">
       <svg width="12" height="12" fill="currentColor">
         <use xlink:href="#icon-minus"></use>

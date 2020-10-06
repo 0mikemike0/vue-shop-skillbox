@@ -10,21 +10,7 @@
       Артикул: {{item.product.id}}
     </span>
 
-    <div class="product__counter form__counter">
-      <button type="button" aria-label="Убрать один товар">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-minus"></use>
-        </svg>
-      </button>
-
-      <input type="text" v-model.number="amount" name="count">
-
-      <button type="button" aria-label="Добавить один товар">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-plus"></use>
-        </svg>
-      </button>
-    </div>
+    <ChangeAmount v-model="amount"/>
 
     <b class="product__price">
       {{ (item.amount * item.product.price) | numberFormat }} ₽
@@ -41,10 +27,14 @@
 <script>
 import numberFormat from '@/helpers/numberFormat';
 import { mapActions } from 'vuex';
+import ChangeAmount from '@/components/ChangeAmount.vue';
 
 export default {
   filters: { numberFormat },
   props: ['item'],
+  components: {
+    ChangeAmount,
+  },
   computed: {
     amount: {
       get() {
