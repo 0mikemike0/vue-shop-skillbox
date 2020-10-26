@@ -6,7 +6,7 @@
       </svg>
     </button>
 
-    <input type="text" :value="productAmount">
+    <input type="text" v-model="amount">
 
     <button type="button" aria-label="Добавить один товар" @click="increment">
       <svg width="12" height="12" fill="currentColor">
@@ -22,6 +22,16 @@ export default {
   model: {
     prop: 'productAmount',
     event: 'amountChange',
+  },
+  computed: {
+    amount: {
+      get() {
+        return this.productAmount;
+      },
+      set(value) {
+        this.$emit('amountChange', value);
+      },
+    },
   },
   methods: {
     increment() {
