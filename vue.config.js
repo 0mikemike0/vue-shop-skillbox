@@ -1,3 +1,3 @@
-  module.exports = {
-    publicPath: '/vue-shop-skillbox/'
-  }
+module.exports = {
+  publicPath: '/vue-shop-skillbox/',
+}
